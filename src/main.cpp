@@ -1,6 +1,6 @@
 #include <Arduino.h>
 #define AMR_Pin 2
-#define Level_Transmitter_Pin A0
+#define Pressure_Transmitter_Pin A0
 #define bounce_time 1000
 #define ON_pin 4
 #define OFF_pin 5
@@ -44,9 +44,9 @@ void Print_Time()
   Serial.println(time);
 }
 
-void Print_Level_Transmitter_Value()
+void Print_Pressure_Transmitter_Value()
 {
-  int val = analogRead(Level_Transmitter_Pin);
+  int val = analogRead(Pressure_Transmitter_Pin);
   Serial.println(val);
 }
 
@@ -64,7 +64,7 @@ void setup()
 *Keeping things simple*
 Counter value command = 'c'
 Reset counter value = 'R'
-Level transmitter value command = 'L'
+Pressure transmitter value command = 'L'
 */
 
 void loop() 
@@ -83,7 +83,7 @@ void loop()
     
     else if(command == 'L')
     {
-      Print_Level_Transmitter_Value();
+      Print_Pressure_Transmitter_Value();
     }
     else if (command == 'R')
     {
