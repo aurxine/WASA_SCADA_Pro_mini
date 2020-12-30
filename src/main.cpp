@@ -11,6 +11,17 @@ unsigned long tic = millis();
 unsigned long toc = 0;
 unsigned int time = 0;
 
+// float pressure_avg(float count)
+// {
+//   float analog_val = 0;
+//  for(int i = 0; i<count; i++)
+//  {
+//   analog_val += analogRead(A0);
+//  }
+//  float avg_analog_val = analog_val/count;
+//  return avg_analog_val;
+// }
+
 
 void Counter()
 {
@@ -44,10 +55,17 @@ void Print_Time()
   Serial.println(time);
 }
 
-void Print_Pressure_Transmitter_Value()
-{
-  int val = analogRead(Pressure_Transmitter_Pin);
-  Serial.println(val);
+void Print_Pressure_Transmitter_Value(float count)   // Printing average transmitter value, count is given by the operator
+{                                                    // Count is the number of values that will be averaged
+  // int val = analogRead(Pressure_Transmitter_Pin);
+  // Serial.println(val);
+  float analog_val = 0;
+  for(int i = 0; i<count; i++)
+  {
+    analog_val += analogRead(Pressure_Transmitter_Pin);
+  }
+  float avg_analog_val = analog_val/count;
+  Serial.println(avg_analog_val);
 }
 
 void setup() 
@@ -83,7 +101,12 @@ void loop()
     
     else if(command == 'L')
     {
-      Print_Pressure_Transmitter_Value();
+      Serial.print("Enter the number of turns you want the average of");  // Reading the user's command regarding averaging values
+      if(Serial.available()){
+        float count = Serial.read();
+        Print_Pressure_Transmitter_Value(count);
+      }
+      // Print_Pressure_Transmitter_Value();
     }
     else if (command == 'R')
     {
