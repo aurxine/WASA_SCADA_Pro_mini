@@ -55,7 +55,7 @@ void Print_Time()
   Serial.println(time);
 }
 
-void Print_Pressure_Transmitter_Value(float count)   // Printing average transmitter value, count is given by the operator
+double Print_Pressure_Transmitter_Value(float count)   // Printing average transmitter value, count is given by the operator
 {                                                    // Count is the number of values that will be averaged
   // int val = analogRead(Pressure_Transmitter_Pin);
   // Serial.println(val);
@@ -65,7 +65,8 @@ void Print_Pressure_Transmitter_Value(float count)   // Printing average transmi
     analog_val += analogRead(Pressure_Transmitter_Pin);
   }
   float avg_analog_val = analog_val/count;
-  Serial.println(avg_analog_val);
+  //Serial.println(avg_analog_val);
+  return avg_analog_val;
 }
 
 void setup() 
@@ -104,7 +105,15 @@ void loop()
       Serial.print("Enter the number of turns you want the average of");  // Reading the user's command regarding averaging values
       if(Serial.available()){
         float count = Serial.read();
-        Print_Pressure_Transmitter_Value(count);
+        float value=Print_Pressure_Transmitter_Value(count);
+        float val_in_volts=(value*5/1023);
+        Serial.print("Volts: ");
+        Serial.print(val_in_volts);
+        Serial.print("V ");
+        Serial.print(" Pressure: ");
+        float pressure = ((91116.7*val_in_volts)/272)-222.32304;
+        Serial.print(pressure);
+        Serial.println(" kPa"); 
       }
       // Print_Pressure_Transmitter_Value();
     }
