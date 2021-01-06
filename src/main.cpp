@@ -55,7 +55,7 @@ void Print_Time()
   Serial.println(time);
 }
 
-double Print_Pressure_Transmitter_Value(int count)   // Printing average transmitter value, count is given by the operator
+void Print_Pressure_Transmitter_Value(int count)   // Printing average transmitter value, count is given by the operator
 {                                                    // Count is the number of values that will be averaged
   // int val = analogRead(Pressure_Transmitter_Pin);
   // Serial.println(val);
@@ -66,7 +66,7 @@ double Print_Pressure_Transmitter_Value(int count)   // Printing average transmi
   }
   float avg_analog_val = analog_val/count;
   //Serial.println(avg_analog_val);
-  return avg_analog_val;
+  Serial.println(avg_analog_val);
 }
 
 void setup() 
