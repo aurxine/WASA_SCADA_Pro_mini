@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #define AMR_Pin 2
 #define Pressure_Transmitter_Pin A0
+#define Level_pin A1
 #define bounce_time 1000
 #define ON_pin 4
 #define OFF_pin 5
@@ -21,7 +22,6 @@ unsigned int time = 0;
 //  float avg_analog_val = analog_val/count;
 //  return avg_analog_val;
 // }
-
 
 void Counter()
 {
@@ -69,6 +69,28 @@ void Print_Pressure_Transmitter_Value(int count)   // Printing average transmitt
   Serial.println(avg_analog_val);
 }
 
+void Print_Level_Sensor_Value(int count)   // Printing Level value, count is given by the operator
+{                                                    // Count is the number of values that will be averaged
+  float analog_val = 0;
+  for(int i = 0; i<count; i++)
+  {
+    analog_val += analogRead(Level_pin);
+  }
+  float avg_analog_val = analog_val/count;
+  //Serial.println(avg_analog_val);
+  float val_in_volts = (avg_analog_val*5.0/1023);
+  Serial.print("Volts: ");
+  Serial.print(val_in_volts);
+  Serial.print("V ");
+  Serial.print(" Level: ");
+  float level = (((val_in_volts*1.218905053)-0.565117967-0.61));
+  level=(level*10000)/3.946;
+  if(level<=0)
+    Serial.print(0);
+  else
+    Serial.print(level);
+}
+
 void setup() 
 {
   Serial.begin(9600);
@@ -103,6 +125,11 @@ void loop()
     else if(command == 'P')
     {
       Print_Pressure_Transmitter_Value(1000);//prints the avg of 1000 analog_reads
+    }
+
+    else if(command == 'L')
+    {
+      Print_Level_Sensor_Value(1000);//prints the avg of 1000 analog_reads and consequent water level
     }
 
     else if (command == 'R')
