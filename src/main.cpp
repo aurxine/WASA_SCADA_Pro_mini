@@ -113,6 +113,11 @@ void loop()
       Print_Pressure_Transmitter_Value(1000);//prints the avg of 1000 analog_reads
     }
 
+    else if(command == 'L')
+    {
+      //put level transmitter
+    }
+
     else if (command == 'R')
     {
       Reset_Counter_and_Time();
