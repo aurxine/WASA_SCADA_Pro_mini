@@ -5,6 +5,7 @@
 #define VFD_ON_OFF_Pin 4
 #define Valve_ON_OFF_Pin 5
 #define Extra_Relay_Connected_To_Gnd 6
+#define Level_pin A1
 
 unsigned long counter = 0;
 unsigned long tic = millis();
@@ -69,6 +70,28 @@ void Print_Pressure_Transmitter_Value(int count)   // Printing average transmitt
   Serial.println(avg_analog_val);
 }
 
+void Print_Level_Sensor_Value(int count)   // Printing Level value, count is given by the operator
+{                                                    // Count is the number of values that will be averaged
+  float analog_val = 0;
+  for(int i = 0; i<count; i++)
+  {
+    analog_val += analogRead(Level_pin);
+  }
+  float avg_analog_val = analog_val/count;
+  //Serial.println(avg_analog_val);
+  float val_in_volts = (avg_analog_val*5.0/1023);
+  Serial.print("Volts: ");
+  Serial.print(val_in_volts);
+  Serial.print("V ");
+  Serial.print(" Level: ");
+  float level = (((val_in_volts*1.218905053)-0.565117967-0.61));
+  level=(level*10000)/3.946;
+  if(level<=0)
+    Serial.print(0);
+  else
+    Serial.print(level);
+}
+
 void setup() 
 {
   Serial.begin(9600);
@@ -115,7 +138,7 @@ void loop()
 
     else if(command == 'L')
     {
-      //put level transmitter
+      Print_Level_Sensor_Value(1000);
     }
 
     else if (command == 'R')
