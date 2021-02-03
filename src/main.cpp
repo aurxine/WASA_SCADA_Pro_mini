@@ -89,7 +89,7 @@ void Print_Level_Sensor_Value(int count)   // Printing Level value, count is giv
   if(level<=0)
     Serial.print(0);
   else
-    Serial.println(level);
+    Serial.println(level/100);
 }
 
 void setup() 
