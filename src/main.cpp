@@ -2,9 +2,9 @@
 #define AMR_Pin 2
 #define Pressure_Transmitter_Pin A0
 #define bounce_time 1000
-#define ON_pin 4
-#define OFF_pin 5
-#define Valve_pin 13
+#define VFD_ON_OFF_Pin 4
+#define Valve_ON_OFF_Pin 5
+#define Extra_Relay_Connected_To_Gnd 6
 
 unsigned long counter = 0;
 unsigned long tic = millis();
@@ -73,17 +73,25 @@ void setup()
 {
   Serial.begin(9600);
   pinMode(AMR_Pin, INPUT_PULLUP);
-  pinMode(ON_pin,OUTPUT);
-  pinMode(OFF_pin,OUTPUT);
-  pinMode(Valve_pin,OUTPUT);
+  pinMode(VFD_ON_OFF_Pin,OUTPUT);
+  pinMode(Valve_ON_OFF_Pin,OUTPUT);
+  pinMode(Extra_Relay_Connected_To_Gnd,OUTPUT);
   attachInterrupt(digitalPinToInterrupt(AMR_Pin), Counter, FALLING);
 }
 
 /*
 *Keeping things simple*
 Counter value command = 'c'
+Time interval between two counts command = 't'
 Reset counter value = 'R'
-Pressure transmitter value command = 'L'
+Pressure transmitter value command = 'P'
+VFD OFF command = 'O'
+VFD ON command = 'o'
+Valve Open command = 'V'
+Valve Close command = 'v'
+Extra relay ON command = 'F'
+Extra relay OFF command = 'f'
+
 */
 
 void loop() 
@@ -112,32 +120,32 @@ void loop()
 
     else if (command == 'O')
     {
-      digitalWrite(ON_pin,HIGH);
+      digitalWrite(VFD_ON_OFF_Pin,HIGH);
     }
 
     else if (command == 'o')
     {
-      digitalWrite(ON_pin,LOW);
-    }
-
-    else if (command == 'F')
-    {
-      digitalWrite(OFF_pin,HIGH);
-    }
-
-    else if (command == 'f')
-    {
-      digitalWrite(OFF_pin,LOW);
+      digitalWrite(VFD_ON_OFF_Pin,LOW);
     }
 
     else if (command == 'V')
     {
-      digitalWrite(Valve_pin,HIGH);
+      digitalWrite(Valve_ON_OFF_Pin,HIGH);
     }
 
     else if (command == 'v')
     {
-      digitalWrite(Valve_pin,LOW);
+      digitalWrite(Valve_ON_OFF_Pin,LOW);
+    }
+
+    else if (command == 'F')
+    {
+      digitalWrite(Extra_Relay_Connected_To_Gnd,HIGH);
+    }
+
+    else if (command == 'f')
+    {
+      digitalWrite(Extra_Relay_Connected_To_Gnd,LOW);
     }
     
     else
