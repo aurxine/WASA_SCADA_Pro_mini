@@ -78,18 +78,15 @@ void Print_Level_Sensor_Value(int count)   // Printing Level value, count is giv
     analog_val += analogRead(Level_pin);
   }
   float avg_analog_val = analog_val/count;
-  //Serial.println(avg_analog_val);
-  float val_in_volts = (avg_analog_val*5.0/1023);
-  // Serial.print("Volts: ");
-  // Serial.print(val_in_volts);
-  // Serial.print("V ");
-  // Serial.print(" Level: ");
-  float level = (((val_in_volts*1.218905053)-0.565117967-0.61));
-  level=(level*10000)/3.946;
-  if(level<=0)
-    Serial.print(0);
-  else
-    Serial.println(level/100);
+  double val_in_volts = (avg_analog_val*5.0/1023);
+  double current = (val_in_volts/220)*1000;
+  double test_lev=(4.6875*(current-3.81)+0.035)*100;
+  if(test_lev<0)
+  {
+    test_lev=0;
+  }
+  Serial.print(test_lev);
+  Serial.println("cm");
 }
 
 void setup() 
